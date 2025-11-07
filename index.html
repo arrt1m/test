@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YQT BOT PRO</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение шрифта Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Темный фон с едва заметным паттерном графика */
+            background-color: #1a1a2e; /* Темно-синий/серый */
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: white;
+        }
+
+        /* Кастомизация выпадающих списков */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: right 1rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em;
+            padding-left: 3rem; /* Место для иконки */
+            /* Иконка стрелки */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+
+        /* Стилизация опций в select */
+        .custom-select option {
+            background: white;
+            color: black;
+        }
+        
+        /* CSS-спиннер (загрузчик) */
+/* ... existing code ... -->
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Стили для кастомного дропдауна */
+        .custom-select-trigger {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: right 1rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em;
+            /* Иконка стрелки */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem; /* 12px 16px */
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-medium;
+        }
+        .dropdown-item:hover {
+            background-color: #f3f4f6; /* light gray */
+        }
+        .dropdown-item svg {
+            margin-right: 0.75rem; /* 12px */
+            flex-shrink: 0; /* Не сжимать иконку */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen w-full px-4">
+
+    <div class="w-full max-w-xs mx-auto">
+        <!-- Заголовок -->
+        <h1 class="text-center text-3xl font-bold text-gray-200 mb-5">YQT BOT PRO</h1>
+
+        <!-- Логотип (плейсхолдер) -->
+        <div class="w-28 h-28 mx-auto mb-8 bg-gray-800 rounded-full flex items-center justify-center border-4 border-red-600 shadow-lg">
+            <span class="text-3xl font-bold text-red-500">Y.Q.T</span>
+        </div>
+
+        <!-- Форма -->
+        <div class="space-y-5">
+            
+            <!-- Выбор брокера (Custom Dropdown) -->
+            <div class="relative" id="brokerDropdown">
+                <!-- Отображаемый выбранный элемент -->
+                <div id="brokerSelected" class="custom-select-trigger w-full bg-white text-gray-900 font-medium py-3 pr-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 flex items-center cursor-pointer relative">
+                    <!-- Место для иконки (абсолютное позиционирование) -->
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" id="brokerIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V4.125z" />
+                        </svg>
+                    </div>
+                    <!-- Текст (с отступом слева, чтобы не налезать на иконку) -->
+                    <span id="brokerText" class="pl-8">QUOTEX</span>
+                </div>
+                
+                <!-- Выпадающий список -->
+                <ul id="brokerOptions" class="absolute z-10 w-full bg-white text-gray-900 rounded-lg shadow-lg mt-1 hidden overflow-hidden">
+                    <li class="dropdown-item" data-value="QUOTEX">
+                        <!-- SVG-иконка QUOTEX (график) -->
+                        <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V4.125z" /></svg>
+                        <span>QUOTEX</span>
+                    </li>
+                    <li class="dropdown-item" data-value="POCKET OPTION">
+                        <!-- SVG-иконка POCKET (синий квадрат) -->
+                        <svg class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16v16H4V4z"/></svg>
+                        <span>POCKET OPTION</span>
+                    </li>
+                    <li class="dropdown-item" data-value="BINOMO">
+                        <!-- SVG-иконка BINOMO (желтый ромб) -->
+                        <svg class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l10 10-10 10L2 12 12 2z"/></svg>
+                        <span>BINOMO</span>
+                    </li>
+                    <li class="dropdown-item" data-value="OLYMP">
+                        <!-- SVG-иконка OLYMP (синий круг) -->
+                        <svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>
+                        <span>OLYMP</span>
+                    </li>
+                    <li class="dropdown-item" data-value="IQ OPTION">
+                        <!-- SVG-иконка IQ (оранжевый круг) -->
+                        <svg class="w-5 h-5 text-orange-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>
+                        <span>IQ OPTION</span>
+                    </li>
+                    <li class="dropdown-item" data-value="EXPERT OPTION">
+                        <!-- SVG-иконка EXPERT (синий график) -->
+                        <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4 19h2v-7H4v7zM10 19h2V8h-2v11zM16 19h2V12h-2v7zM22 19h2V4h-2v15z"/></svg>
+                        <span>EXPERT OPTION</span>
+                    </li>
+                </ul>
+                <!-- Скрытый select для совместимости (необязательно, но полезно) -->
+                <select id="brokerSelect" name="broker" class="hidden">
+                    <option value="QUOTEX" selected>QUOTEX</option>
+                    <option value="POCKET OPTION">POCKET OPTION</option>
+                    <option value="BINOMO">BINOMO</option>
+                    <option value="OLYMP">OLYMP</option>
+                    <option value="IQ OPTION">IQ OPTION</option>
+                    <option value="EXPERT OPTION">EXPERT OPTION</option>
+                </select>
+            </div>
+
+            <!-- Выбор пары -->
+            <div class="relative">
+                <!-- Пустая иконка-заглушка для выравнивания -->
+                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                     <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                 </div>
+                <select class="custom-select w-full bg-white text-gray-900 font-medium py-3 pr-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <option>USD/BRL (OTC)</option>
+                    <option>EUR/USD (OTC)</option>
+                    <option>AUD/JPY (OTC)</option>
+                    <option>USD/ARS (OTC)</option>
+                    <option>USD/CHF (OTC)</option>
+                    <option>USD/JPY (OTC)</option>
+                    <option>USD/PKR (OTC)</option>
+                </select>
+            </div>
+            
+            <!-- Выбор времени -->
+            <div class="relative">
+                <!-- Иконка вопроса -->
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                     <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <select class="custom-select w-full bg-white text-gray-900 font-medium py-3 pr-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <option>1m</option>
+                    <option>10s</option>
+                    <option>15s</option>
+                    <option>30s</option>
+                    <option>2m</option>
+                    <option>5m</option>
+                </select>
+            </div>
+
+            <!-- Кнопка -->
+            <button id="getSignalBtn" class="w-full bg-red-600 text-white font-bold py-3 rounded-lg shadow-lg transition-all duration-200 hover:bg-red-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                GET SIGNAL
+            </button>
+        </div>
+
+        <!-- Область вывода сигнала -->
+        <div id="signalArea" class="text-center mt-8 h-20 flex flex-col items-center justify-center">
+            <!-- Сюда будет вставлен спиннер, таймер и сигнал -->
+        </div>
+    </div>
+
+    <script>
+        const signalButton = document.getElementById('getSignalBtn');
+        const signalArea = document.getElementById('signalArea');
+        let timerInterval;
+
+        // --- Логика для кастомного дропдауна ---
+        const brokerDropdown = document.getElementById('brokerDropdown');
+        const brokerSelected = document.getElementById('brokerSelected');
+        const brokerOptions = document.getElementById('brokerOptions');
+        const brokerIcon = document.getElementById('brokerIcon');
+        const brokerText = document.getElementById('brokerText');
+        const hiddenBrokerSelect = document.getElementById('brokerSelect');
+
+        // Показать/скрыть список опций
+        brokerSelected.addEventListener('click', (e) => {
+            e.stopPropagation(); // Остановить всплытие события
+            brokerOptions.classList.toggle('hidden');
+        });
+
+        // Выбор опции
+        brokerOptions.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Получаем новую иконку (клонируем SVG) и текст
+                const newIcon = item.querySelector('svg');
+                const newText = item.querySelector('span').textContent;
+                const newValue = item.dataset.value;
+
+                // Обновляем отображаемый элемент
+                brokerText.textContent = newText;
+                
+                // Обновляем SVG иконку в кнопке
+                brokerIcon.innerHTML = newIcon.innerHTML; // Копируем внутренности SVG (path, circle и т.д.)
+                brokerIcon.setAttribute('viewBox', newIcon.getAttribute('viewBox')); // Копируем viewBox
+                // Копируем классы Tailwind для цвета
+                brokerIcon.setAttribute('class', newIcon.getAttribute('class') + ' w-5 h-5'); 
+
+                // Обновляем скрытый select (для форм)
+                hiddenBrokerSelect.value = newValue;
+
+                // Скрываем список
+                brokerOptions.classList.add('hidden');
+            });
+        });
+
+        // Скрывать дропдаун при клике вне его
+        document.addEventListener('click', () => {
+            if (!brokerOptions.classList.contains('hidden')) {
+                brokerOptions.classList.add('hidden');
+            }
+        });
+        // --- Конец логики дропдауна ---
+
+        signalButton.addEventListener('click', () => {
+            // Отключаем кнопку и показываем спиннер
+            signalButton.disabled = true;
+            signalArea.innerHTML = '<div class="loader"></div>';
+
+            // Очищаем предыдущий таймер, если он был
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            // Имитация задержки сети (1.5 секунды)
+            setTimeout(() => {
+                // Генерируем случайный сигнал
+                const signals = ['BUY', 'SELL'];
+                const signal = signals[Math.floor(Math.random() * signals.length)];
+                const signalColor = signal === 'BUY' ? 'text-green-400' : 'text-red-500';
+
+                // Устанавливаем время таймера (60 секунд)
+                let timeLeft = 59;
+
+                // Отображаем таймер и сигнал
+                signalArea.innerHTML = `
+                    <div id="timer" class="text-gray-400 text-lg mb-1">GET NEXT IN 0:${timeLeft}</div>
+                    <div class="text-4xl font-bold ${signalColor} animate-pulse">${signal}</div>
+                `;
+
+                // Запускаем обратный отсчет
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    const timerElement = document.getElementById('timer');
+                    if (timerElement) {
+                        timerElement.textContent = `GET NEXT IN 0:${timeLeft.toString().padStart(2, '0')}`;
+                    }
+
+                    // Когда таймер доходит до нуля
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        signalArea.innerHTML = ''; // Очищаем область
+                        signalButton.disabled = false; // Включаем кнопку
+                    }
+                }, 1000);
+
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
